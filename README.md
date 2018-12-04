@@ -38,7 +38,7 @@ events {}
         }   
     }
 ```
-`nginx -s reload`  
+- `nginx -s reload`  
 
 ## Change ownership of jobs folder to jenkins
 - To get [JENKINS_ID] use `kubectl get pods`  
