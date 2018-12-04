@@ -24,7 +24,7 @@ e.g. `gcloud compute disks create --size=200GB --zone=europe-west2-c jenkins-job
 - `kubectl exec -it [NGINX_ID] bash`  
 ### Install vim to edit files (optional)
 - `apt update`  
-- `apt install vim`   
+- `apt install -y vim`   
 ### Edit nginx.conf
 - `cd /etc/nginx`  
 - `vim nginx.conf`  
