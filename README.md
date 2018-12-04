@@ -12,20 +12,39 @@ e.g. `gcloud container clusters create kubectl-cluster --zone europe-west2-c`
 
 ## If there is no persistent disk, create it
 Adjust size of disk and zone to preference: `gcloud compute disks create --size=[SIZE] --zone=[ZONE] jenkins-jobs`  
-e.g. `gcloud compute disks create --size=200GB --zone=europe-west2-c jenkins-jobs`
+e.g. `gcloud compute disks create --size=200GB --zone=europe-west2-c jenkins-jobs`  
 
 ## Run .yml files
-`kubectl create -f cluster-admin-role-binding.yml`
-`kubectl create -f jenkins`
-`kubectl create -f nginx`
+`kubectl create -f cluster-admin-role-binding.yml`  
+`kubectl create -f jenkins`  
+`kubectl create -f nginx`  
 
 ## Edit nginx.conf to connect to jenkins
-To get [NGINX_ID] use `kubectl get pods`  
+To get [NGINX_ID] use `kubectl get pods`    
 `kubectl exec -it [NGINX_ID] bash`  
 ### Install vim to edit files (optional)
-apt update
-apt install vim
+`apt update`  
+`apt install vim`   
 ### Edit nginx.conf
-cd /etc/nginx
-vim nginx.conf 
-    
+`cd /etc/nginx`  
+`vim nginx.conf`  
+```
+    events {}   
+        http {   
+            server {   
+                location / {   
+                    proxy_pass http://jenkins:8080/;   
+                }   
+            }   
+        }
+```
+`   nginx -s reload`  
+
+## Change ownership of jobs folder to jenkins
+To get [JENKINS_ID] use `kubectl get pods`  
+`kubectl exec -it [JENKINS_ID] bash`  
+`cd /var/jenkins_home`  
+`sudo chown jenkins:jenkins jobs`  
+### Restart jenkins deployment
+`kubectl delete -f jenkins/04_deployments.yml`    
+`kubectl create -f jenkins/04_deployments.yml`  
