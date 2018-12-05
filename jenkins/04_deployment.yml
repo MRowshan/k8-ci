@@ -16,15 +16,15 @@ spec:
       serviceAccountName: jenkins-service-account
       containers:
       - name: jenkins
-        image: bobcrutchley/jenkins
+        image: mustakim/jenkins
         ports:
         - name: http-port
           containerPort: 8080
         volumeMounts:
-        - name: jenkins-jobs
-          mountPath: /var/jenkins_home/jobs
+        - name: jenkins
+          mountPath: /var/jenkins_home/
       volumes:
-        - name: jenkins-jobs
+        - name: jenkins
           gcePersistentDisk:
-            pdName: jenkins-jobs
+            pdName: jenkins
             fsType: ext4
